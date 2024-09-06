@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouTube Transcript to SRT</title>
+    <link rel="stylesheet" href="dist/bootstrap-5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="dist/vue-3.5.3/vue.global.js"></script>
+</head>
+<body>
+    <div id="yt-srt" class="container-fluid pt-2" v-cloak>
+        <h2>YouTube Transcript to SRT</h2>
+        <p>Convert YouTube timedtext API response to SubRip Subtitle.</p>
+        <div class="row">
+            <div class="col-md-6 pb-3">
+                <div class="mb-1 d-flex justify-content-between align-items-center">
+                    <label for="txt-timedtext" class="fw-bold">YouTube timedtext API Response:</label>
+                    <button class="btn btn-sm" style="visibility: hidden">&nbsp;</button>
+                </div>
+                <textarea v-model="input.text" @keyup="processTimedText" class="form-control border-primary" ref="txt-timedtext" id="txt-timedtext" rows="24"></textarea>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-1 d-flex justify-content-between align-items-center">
+                    <label for="txt-result" class="fw-bold">SRT Result:</label>
+                    <button @click="copyOutput" class="btn btn-sm btn-outline-primary" :disabled="copying || hasError || input.text === ''">Copy</button>
+                </div>
+                <textarea v-if="hasError" class="form-control text-danger" ref="txt-error" id="txt-error" rows="24" readonly>{{ error.message }}</textarea>
+                <textarea v-else class="form-control" :class="{ 'border-primary': copying }" ref="txt-result" id="txt-result" rows="24" readonly>{{ output.text }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="dist/bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
