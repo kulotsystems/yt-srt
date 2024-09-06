@@ -71,22 +71,25 @@ document.addEventListener('DOMContentLoaded',function() { const ytSrtApp = Vue.c
                             // get event lines
                             const arrLines = [];
                             if(event.hasOwnProperty('segs')) {
+                                let line = '';
                                 for(let j = 0; j < event.segs.length; j++) {
                                     const seg = event.segs[j];
-                                    for(const encoding in seg) {
-                                        const line = seg[encoding]
-                                        arrLines.push(line);
-                                    }
+                                    if(seg.hasOwnProperty('utf8'))
+                                        line += seg.utf8;
                                 }
+                                if(line !== '' && line.replaceAll('\n', '') !== '')
+                                    arrLines.push(line);
                             }
-                            const strLines = arrLines.join("\n");
+                            if(arrLines.length > 0) {
+                                const strLines = arrLines.join("\n");
 
-                            // push output
-                            this.output.arr.push({
-                                time: { start, end },
-                                line: strLines
-                            });
-                            this.output.text += `${i+1}\n${start} --> ${end}\n${strLines}${i < (totalEvents - 1) ? '\n\n' : ''}`;
+                                // push output
+                                this.output.arr.push({
+                                    time: { start, end },
+                                    line: strLines
+                                });
+                                this.output.text += `${i+1}\n${start} --> ${end}\n${strLines}${i < (totalEvents - 1) ? '\n\n' : ''}`;
+                            }
                         }
                     }
                 }
